@@ -61,24 +61,49 @@
             });
         });
 
-        // Check the equation
+        // Check the equation and validate it with the backend
         function checkEquation() {
             let values = Array.from(slots).map(slot => parseInt(slot.textContent) || NaN);
             if (!values.includes(NaN)) {
-                let isCorrect = values[0] + values[1] === values[2];
-                slots.forEach((slot, index) => {
-                    if (isCorrect && index === 0 || index === 1 || index === 2) {
-                        slot.classList.add("correct");
-                        slot.classList.remove("incorrect");
-                    } else {
-                        slot.classList.add("incorrect");
-                        slot.classList.remove("correct");
-                    }
-                });
-                if (isCorrect) {
-                    alert("Correct!");
-                }
+                let num1 = values[0];
+                let num2 = values[1];
+                let result = values[2];
+                validateEquation(num1, num2, result);  // Validate with backend
             }
+        }
+
+        // Validate equation via backend
+        function validateEquation(num1, num2, result) {
+            fetch('/validate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ num1, num2, result })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.valid) {
+                    alert(data.message);
+                    highlightSlots(true);  // Highlight as correct
+                } else {
+                    alert(data.message);
+                    highlightSlots(false);  // Highlight as incorrect
+                }
+            });
+        }
+
+        // Highlight slots based on correctness
+        function highlightSlots(isCorrect) {
+            slots.forEach(slot => {
+                if (isCorrect) {
+                    slot.classList.add("correct");
+                    slot.classList.remove("incorrect");
+                } else {
+                    slot.classList.add("incorrect");
+                    slot.classList.remove("correct");
+                }
+            });
         }
 
         // Reset the board
