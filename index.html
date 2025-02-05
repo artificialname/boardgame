@@ -113,6 +113,12 @@
                 slot.classList.remove("correct", "incorrect");
             });
         });
+
+        fetch("https://your-app.onrender.com/hello")
+  .then(response => response.json())
+  .then(data => console.log(data.message))  // Should log "Hello, world!"
+  .catch(error => console.error("Error:", error));
+
     </script>
 </body>
 </html>
