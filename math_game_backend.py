@@ -4,14 +4,16 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
-# ✅ Allow all origins or specify your frontend URL
+# ✅ Allow all origins or restrict to your frontend domain
 CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins
-# If you want to restrict access only to your frontend:
+# Or use this if you only want to allow your frontend:
 # CORS(app, resources={r"/*": {"origins": "https://boardgame-uvg1.onrender.com"}})
 
 @app.route('/hello', methods=['GET'])
 def hello_world():
-    return jsonify({"message": "Hello, world!"})
+    response = jsonify({"message": "Hello, world!"})
+    response.headers.add("Access-Control-Allow-Origin", "*")  # Add this explicitly
+    return response
 
 @app.route('/validate', methods=['POST'])
 def validate_equation():
