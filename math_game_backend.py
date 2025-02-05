@@ -5,6 +5,11 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)  # Enable CORS for cross-origin requests
 
+# ✅ New test route to check if the backend is running
+@app.route('/hello', methods=['GET'])
+def hello_world():
+    return jsonify({"message": "Hello, world!"})
+
 @app.route('/validate', methods=['POST'])
 def validate_equation():
     data = request.json
@@ -28,6 +33,5 @@ def validate_equation():
         return jsonify({"valid": False, "message": "Incorrect. Try again!"})
 
 if __name__ == '__main__':
-    # Use Render's dynamic port
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
