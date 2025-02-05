@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -27,4 +28,6 @@ def validate_equation():
         return jsonify({"valid": False, "message": "Incorrect. Try again!"})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Use Render's dynamic port
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
