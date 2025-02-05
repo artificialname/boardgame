@@ -3,9 +3,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for cross-origin requests
 
-# ✅ New test route to check if the backend is running
+# ✅ Allow all origins or specify your frontend URL
+CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins
+# If you want to restrict access only to your frontend:
+# CORS(app, resources={r"/*": {"origins": "https://boardgame-uvg1.onrender.com"}})
+
 @app.route('/hello', methods=['GET'])
 def hello_world():
     return jsonify({"message": "Hello, world!"})
