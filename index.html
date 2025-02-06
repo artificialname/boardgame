@@ -29,11 +29,13 @@
     <button class="reset-button" id="reset">Reset Board</button>
 
     <script>
+        const backendURL = "https://boardgame-nqhr.onrender.com"; // Correct backend URL
+
         let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         let cardContainer = document.getElementById("cards");
         let slots = document.querySelectorAll(".slot");
         let resetButton = document.getElementById("reset");
-        
+
         // Generate cards
         numbers.forEach(num => {
             let card = document.createElement("div");
@@ -74,7 +76,7 @@
 
         // Validate equation via backend
         function validateEquation(num1, num2, result) {
-            fetch('/validate', {
+            fetch(`${backendURL}/validate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -90,7 +92,8 @@
                     alert(data.message);
                     highlightSlots(false);  // Highlight as incorrect
                 }
-            });
+            })
+            .catch(error => console.error("Error:", error));
         }
 
         // Highlight slots based on correctness
@@ -114,10 +117,11 @@
             });
         });
 
-        fetch("https://your-app.onrender.com/hello")
-  .then(response => response.json())
-  .then(data => console.log(data.message))  // Should log "Hello, world!"
-  .catch(error => console.error("Error:", error));
+        // Test backend connection
+        fetch(`${backendURL}/hello`)
+            .then(response => response.json())
+            .then(data => console.log(data.message))  // Should log "Hello, world!"
+            .catch(error => console.error("Error:", error));
 
     </script>
 </body>
