@@ -10,28 +10,29 @@ def fetch_data():
 
     # Ensure there are enough rows to avoid out-of-bounds errors
     if df.shape[0] < 3:
-        return [], []  # Return empty data if there aren't enough rows
+        return [], [], []  # Return empty data if there aren't enough rows
+
+    # Extract labels from B1:I1 (row index 0, columns B to I)
+    labels = df.iloc[0, 1:9].tolist()  
 
     # Extract headers from B2:I2 (row index 1, columns B to I)
-    column_headers = df.iloc[0, 1:9].tolist()
+    column_headers = df.iloc[1, 1:9].tolist()
 
     # Extract cards dynamically based on available rows
     cards = []
-    for i in range(2, min(14, len(df))):  # Start at row 3 (index 2) and go up to available rows
-        if i >= len(df):  # Avoid index errors
-            break
+    for i in range(2, min(14, len(df))):  # Start at row 3 (index 2)
         card = {
             "title": df.iloc[i, 0],  # Column A (Action Card)
             "data": df.iloc[i, 1:9].tolist()  # Columns B to I (Data)
         }
         cards.append(card)
 
-    return column_headers, cards
+    return labels, column_headers, cards
 
 @app.route("/")
 def home():
-    column_headers, cards = fetch_data()
-    return render_template("index.html", column_headers=column_headers, cards=cards)
+    labels, column_headers, cards = fetch_data()
+    return render_template("index.html", labels=labels, column_headers=column_headers, cards=cards)
 
 if __name__ == "__main__":
     app.run(debug=True)
