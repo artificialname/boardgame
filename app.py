@@ -10,7 +10,7 @@ def fetch_data():
     df = pd.read_csv(GOOGLE_SHEET_URL)
 
     # Ensure there are enough rows to avoid out-of-bounds errors
-    if df.shape[0] < 3:
+    if df.shape[0] < 2:
         return [], [], []
 
     # Extract labels from B1:I1 and replace NaN with empty strings
@@ -21,7 +21,7 @@ def fetch_data():
 
     # Extract cards dynamically based on available rows
     cards = []
-    for i in range(2, min(14, len(df))):  # Start at row 3 (index 2)
+    for i in range(1, min(14, len(df))):  # Start at row 2 (index 1)
         card = {
             "title": df.iloc[i, 0] if pd.notna(df.iloc[i, 0]) else "",  # Handle NaN in title
             "data": df.iloc[i, 1:9].replace(np.nan, "").tolist()  # Replace NaN with empty strings in data
