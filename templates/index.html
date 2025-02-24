@@ -3,58 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Playing Cards</title>
+    <title>Math Board Game</title>
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-        .card {
-            width: 90vw;
-            height: 40vh;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin: 20px 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .card-title {
-            font-size: 1.8em;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        .card-content {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 10px;
-            text-align: center;
-        }
-        .card-content div {
-            background: #ddd;
-            padding: 10px;
-            border-radius: 5px;
-        }
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .game-board { display: flex; justify-content: center; margin-top: 20px; }
+        .slot { width: 60px; height: 60px; margin: 5px; border: 2px dashed #000; display: inline-flex; align-items: center; justify-content: center; font-size: 24px; }
+        .card { width: 180px; padding: 10px; margin: 10px; background: lightblue; display: inline-block; text-align: center; font-size: 18px; cursor: grab; border-radius: 8px; }
+        .card h3 { margin: 5px 0; font-size: 20px; }
+        .subtitles, .values { display: flex; justify-content: space-around; margin-top: 5px; }
+        .subtitles div, .values div { width: 20px; font-size: 14px; }
+        .reset-button { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
     </style>
 </head>
 <body>
-    {% for card in cards %}
-    <div class="card">
-        <div class="card-title">{{ card.title }}</div>
-        <div class="card-content">
-            {% for value in card.data %}
-            <div>{{ value }}</div>
-            {% endfor %}
-        </div>
+    <h1>Math Board Game</h1>
+    <div class="game-board" id="board">
+        <div class="slot" data-index="0"></div>
+        <span>+</span>
+        <div class="slot" data-index="1"></div>
+        <span>=</span>
+        <div class="slot" data-index="2"></div>
     </div>
-    {% endfor %}
+    
+    <h2>Your Cards</h2>
+    <div id="cards"></div>
+    
+    <button class="reset-button" id="reset">Reset Board</button>
+
+    <script>
+        const backendURL = "https://boardgame-nqhr.onrender.com"; 
+
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch(`${backendURL}/data`)
+                .then(response => response.json())
+                .then(data => displayCards(data.subtitles, data.cards))
+                .catch(error => console.error("Error fetching data:", error));
+        });
+
+        function displayCards(subtitles, cards) {
+            let cardContainer = document.getElementById("cards");
+            cardContainer.innerHTML = "";
+
+            cards.forEach(card => {
+                let cardElement = document.createElement("div");
+                cardElement.classList.add("card");
+
+                let titleElement = document.createElement("h3");
+                titleElement.textContent = card.title;
+                cardElement.appendChild(titleElement);
+
+                let subtitleRow = document.createElement("div");
+                subtitleRow.classList.add("subtitles");
+                subtitles.forEach(sub => {
+                    let subEl = document.createElement("div");
+                    subEl.textContent = sub;
+                    subtitleRow.appendChild(subEl);
+                });
+                cardElement.appendChild(subtitleRow);
+
+                let valueRow = document.createElement("div");
+                valueRow.classList.add("values");
+                card.data.forEach(value => {
+                    let valueEl = document.createElement("div");
+                    valueEl.textContent = value;
+                    valueRow.appendChild(valueEl);
+                });
+                cardElement.appendChild(valueRow);
+
+                cardContainer.appendChild(cardElement);
+            });
+        }
+
+        let slots = document.querySelectorAll(".slot");
+        let resetButton = document.getElementById("reset");
+
+        slots.forEach(slot => {
+            slot.addEventListener("dragover", (e) => e.preventDefault());
+            slot.addEventListener("drop", (e) => {
+                e.preventDefault();
+                let num = e.dataTransfer.getData("text/plain");
+                slot.textContent = num;
+                checkEquation();
+            });
+        });
+
+        function checkEquation() {
+            let values = Array.from(slots).map(slot => parseInt(slot.textContent) || NaN);
+            if (!values.includes(NaN)) {
+                let num1 = values[0];
+                let num2 = values[1];
+                let result = values[2];
+                validateEquation(num1, num2, result);
+            }
+        }
+
+        function validateEquation(num1, num2, result) {
+            fetch(`${backendURL}/validate`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ num1, num2, result })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.valid) {
+                    alert(data.message);
+                    highlightSlots(true);
+                } else {
+                    alert(data.message);
+                    highlightSlots(false);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function highlightSlots(isCorrect) {
+            slots.forEach(slot => {
+                if (isCorrect) {
+                    slot.classList.add("correct");
+                    slot.classList.remove("incorrect");
+                } else {
+                    slot.classList.add("incorrect");
+                    slot.classList.remove("correct");
+                }
+            });
+        }
+
+        resetButton.addEventListener("click", () => {
+            slots.forEach(slot => {
+                slot.textContent = "";
+                slot.classList.remove("correct", "incorrect");
+            });
+        });
+
+    </script>
 </body>
 </html>
