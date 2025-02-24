@@ -7,32 +7,31 @@ GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQbXNvjqouvs
 
 def fetch_data():
     df = pd.read_csv(GOOGLE_SHEET_URL)
-    
+
     # Ensure there are enough rows to avoid out-of-bounds errors
     if df.shape[0] < 3:
         return [], []  # Return empty data if there aren't enough rows
-    
-    # Extract subtitles from row 1, columns B to I (row index 0, columns 1 to 8)
-    subtitles = df.iloc[0, 1:9].tolist()
-    
+
+    # Extract headers from B2:I2 (row index 1, columns B to I)
+    column_headers = df.iloc[0, 1:9].tolist()
+
     # Extract cards dynamically based on available rows
     cards = []
-    for i in range(1, len(df)):  # Start from index 1 instead of 2
+    for i in range(2, min(14, len(df))):  # Start at row 3 (index 2) and go up to available rows
         if i >= len(df):  # Avoid index errors
             break
         card = {
-            "title": df.iloc[i, 0],  # Column A (Title)
-            "subtitles": subtitles,  # Subtitles for each column
+            "title": df.iloc[i, 0],  # Column A (Action Card)
             "data": df.iloc[i, 1:9].tolist()  # Columns B to I (Data)
         }
         cards.append(card)
-    
-    return subtitles, cards
+
+    return column_headers, cards
 
 @app.route("/")
 def home():
-    subtitles, cards = fetch_data()
-    return render_template("index.html", subtitles=subtitles, cards=cards)
+    column_headers, cards = fetch_data()
+    return render_template("index.html", column_headers=column_headers, cards=cards)
 
 if __name__ == "__main__":
     app.run(debug=True)
