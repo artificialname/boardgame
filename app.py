@@ -12,8 +12,8 @@ def fetch_data():
     if df.shape[0] < 3:
         return [], []  # Return empty data if there aren't enough rows
     
-    # Extract headers from B2:I2 (row index 1, columns B to I)
-    column_headers = df.iloc[0, 1:9].tolist()
+    # Extract subtitles from row 1, columns B to I (row index 0, columns 1 to 8)
+    subtitles = df.iloc[0, 1:9].tolist()
     
     # Extract cards dynamically based on available rows
     cards = []
@@ -22,16 +22,17 @@ def fetch_data():
             break
         card = {
             "title": df.iloc[i, 0],  # Column A (Title)
+            "subtitles": subtitles,  # Subtitles for each column
             "data": df.iloc[i, 1:9].tolist()  # Columns B to I (Data)
         }
         cards.append(card)
     
-    return column_headers, cards
+    return subtitles, cards
 
 @app.route("/")
 def home():
-    column_headers, cards = fetch_data()
-    return render_template("index.html", column_headers=column_headers, cards=cards)
+    subtitles, cards = fetch_data()
+    return render_template("index.html", subtitles=subtitles, cards=cards)
 
 if __name__ == "__main__":
     app.run(debug=True)
