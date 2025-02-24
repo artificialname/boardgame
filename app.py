@@ -7,13 +7,19 @@ GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQbXNvjqouvs
 
 def fetch_data():
     df = pd.read_csv(GOOGLE_SHEET_URL)
-    
+
+    # Ensure there are enough rows to avoid out-of-bounds errors
+    if df.shape[0] < 3:
+        return [], []  # Return empty data if there aren't enough rows
+
     # Extract headers from B2:I2 (row index 1, columns B to I)
     column_headers = df.iloc[0, 1:9].tolist()
 
-    # Extract cards from A3:A14 with their respective data from B3:I14
+    # Extract cards dynamically based on available rows
     cards = []
-    for i in range(2, 14):  # Rows A3:A14 (zero-based index = 2 to 13)
+    for i in range(2, min(14, len(df))):  # Start at row 3 (index 2) and go up to available rows
+        if i >= len(df):  # Avoid index errors
+            break
         card = {
             "title": df.iloc[i, 0],  # Column A (Title)
             "data": df.iloc[i, 1:9].tolist()  # Columns B to I (Data)
@@ -21,6 +27,7 @@ def fetch_data():
         cards.append(card)
 
     return column_headers, cards
+
 
 @app.route("/")
 def home():
