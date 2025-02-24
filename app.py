@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 import requests
 import pandas as pd
+import io  # Import io for StringIO
 
 app = Flask(__name__)
 
@@ -10,8 +11,21 @@ SHEET_URL = "https://docs.google.com/spreadsheets/d/your_sheet_id/pub?output=csv
 def fetch_data():
     response = requests.get(SHEET_URL)
     data = response.content.decode("utf-8")
-    df = pd.read_csv(pd.compat.StringIO(data))  # Convert CSV to DataFrame
-    return df.to_dict(orient="records")  # Convert to list of dictionaries
+    df = pd.read_csv(io.StringIO(data), skiprows=1)  # Skip row 1
+
+    # Rename columns for easier access
+    df.rename(columns={"Action card": "Title"}, inplace=True)
+
+    # Convert to list of dictionaries
+    cards = []
+    for _, row in df.iterrows():
+        card = {
+            "Title": row["Title"],
+            "Details": ", ".join([f"{col}: {row[col]}" for col in ["MOF", "MOE", "MOP", "MOI", "MOS", "MOT", "MOC", "MOD"]])
+        }
+        cards.append(card)
+
+    return cards
 
 @app.route("/")
 def home():
