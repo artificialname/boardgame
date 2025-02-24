@@ -8,7 +8,7 @@ GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQbXNvjqouvs
 def fetch_data():
     df = pd.read_csv(GOOGLE_SHEET_URL)
 
-    # Ensure there are enough rows to avoid out-of-bounds errors
+    # Ensure there are enough rows to avoid out of bounds errors
     if df.shape[0] < 3:
         return [], [], []  # Return empty data if there aren't enough rows
 
