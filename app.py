@@ -1,38 +1,48 @@
 from flask import Flask, render_template
 import requests
 import pandas as pd
-import io  # Import io for StringIO
+import io
 
 app = Flask(__name__)
 
-# Replace this with your Google Sheet URL (CSV format )
+# Replace with your Google Sheet CSV link
 SHEET_URL = "https://docs.google.com/spreadsheets/d/your_sheet_id/pub?output=csv"
 
 def fetch_data():
-    response = requests.get(SHEET_URL)
-    data = response.content.decode("utf-8")
-    df = pd.read_csv(io.StringIO(data))
+    try:
+        response = requests.get(SHEET_URL)
+        response.raise_for_status()  # Check if the request was successful
+        data = response.content.decode("utf-8")
+        df = pd.read_csv(io.StringIO(data), skiprows=1)  # Skip Row 1
 
-    # Extract column headers from the second row (B2:I2)
-    column_headers = df.iloc[0, 1:9].tolist()
+        if df.empty:
+            print("Error: Google Sheet is empty!")
+            return []
 
-    # Remove the first row (headers) and reset the index
-    df = df.iloc[1:].reset_index(drop=True)
+        # Extract column headers from Row 2 (B2:I2)
+        column_headers = df.iloc[0, 1:9].tolist()
 
-    # Rename the first column (A) to "Title"
-    df.rename(columns={df.columns[0]: "Title"}, inplace=True)
+        # Extract rows from A3:A14 (Titles) and B3:I14 (Data)
+        df = df.iloc[1:12].reset_index(drop=True)  # Select rows 3-14 (1-based indexing)
 
-    # Convert to list of dictionaries
-    cards = []
-    for _, row in df.iterrows():
-        card = {
-            "Title": row["Title"],
-            "Headers": column_headers,
-            "Values": row.iloc[1:9].tolist()  # Use `.iloc` for better indexing
-        }
-        cards.append(card)
+        # Rename first column (A) to "Title"
+        df.rename(columns={df.columns[0]: "Title"}, inplace=True)
 
-    return cards
+        # Convert to list of dictionaries for HTML rendering
+        cards = []
+        for _, row in df.iterrows():
+            card = {
+                "Title": row["Title"],  # Card title from Column A
+                "Headers": column_headers,  # Table headers (B2:I2)
+                "Values": row.iloc[1:9].tolist()  # Row data (B3:I3 → B14:I14)
+            }
+            cards.append(card)
+
+        return cards
+
+    except Exception as e:
+        print("Error fetching data:", e)
+        return []
 
 @app.route("/")
 def home():
