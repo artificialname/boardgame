@@ -6,7 +6,7 @@ import io  # Import io for StringIO
 app = Flask(__name__)
 
 # Replace this with your Google Sheet URL (CSV format)
-SHEET_URL = "https://docs.google.com/spreadsheets/d/your_sheet_id/pub?output=csv"
+SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQbXNvjqouvsgiidt7Ra2CvWotrQA_0iDoSiWfhNDews05Afp3bjNlOcfvh-9Hv9dPFp0L4f7QZR-Ah/pub?output=csv"
 
 def fetch_data():
     response = requests.get(SHEET_URL)
