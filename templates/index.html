@@ -6,55 +6,52 @@
     <title>Playing Cards</title>
     <style>
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
         }
         .card {
+            width: 90vw;
+            height: 40vh;
             background: white;
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
             padding: 20px;
-            margin: 15px;
-            width: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .card-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .card-content {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 10px;
             text-align: center;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background-color: #f8f8f8;
+        .card-content div {
+            background: #ddd;
+            padding: 10px;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-
-    {% for card in cards %}
     <div class="card">
-        <h2>{{ card['Title'] }}</h2>
-        <table>
-            <tr>
-                {% for header in card['Headers'] %}
-                <th>{{ header }}</th>
-                {% endfor %}
-            </tr>
-            <tr>
-                {% for value in card['Values'] %}
-                <td>{{ value }}</td>
-                {% endfor %}
-            </tr>
-        </table>
+        <div class="card-title">Card Title Example</div>
+        <div class="card-content">
+            <div>MOF</div><div>MOE</div><div>MOP</div><div>MOI</div>
+            <div>MOS</div><div>MOT</div><div>MOC</div><div>MOD</div>
+        </div>
     </div>
-    {% endfor %}
-
 </body>
 </html>
