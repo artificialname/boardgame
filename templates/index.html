@@ -18,29 +18,36 @@
         .header {
             width: 100%;
             background: blue;
-            color: black;  /* Text color */
+            color: black;
             display: flex;
-            flex-wrap: wrap;  /* Allows text to wrap */
+            flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            font-size: 0.9em;  /* Smaller font size */
-            font-weight: normal;  /* Remove bold */
+            font-size: 0.9em;
+            font-weight: normal;
             position: fixed;
             top: 0;
             left: 0;
-            padding: 10px; /* Adjust padding for better spacing */
-            min-height: 6vh; /* Adjust height to fit multiple lines */
+            padding: 10px;
+            min-height: 6vh;
             text-align: center;
+        }
+        .header div {
+            flex: 1;
+            text-align: center;
+            padding: 5px;
+            border-left: 1px solid white;  /* Thin left border */
+            border-right: 1px solid white; /* Thin right border */
         }
         .content {
             width: 100%;
-            height: calc(100vh - 6vh); /* Adjusted to match the new header height */
+            height: calc(100vh - 6vh);
             overflow-y: auto;
             padding-top: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 6vh; /* Offset by header height */
+            margin-top: 6vh;
         }
         .card {
             width: 90vw;
@@ -60,15 +67,7 @@
             text-align: left;
             margin-bottom: 10px;
         }
-        .card-labels {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 10px;
-            text-align: center;
-            color: #555;
-            font-size: 1em;
-        }
-        .card-content {
+        .card-labels, .card-content {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
             gap: 10px;
@@ -78,6 +77,8 @@
             background: #ddd;
             padding: 10px;
             border-radius: 5px;
+            border-left: 1px solid #999;  /* Thin left border */
+            border-right: 1px solid #999; /* Thin right border */
         }
     </style>
 </head>
@@ -85,7 +86,7 @@
     <!-- Header with Google Sheet Row 1 -->
     <div class="header">
         {% for label in column_headers %}
-            <div style="flex: 1; text-align: center; padding: 5px;">{{ label }}</div>
+            <div>{{ label }}</div>
         {% endfor %}
     </div>
 
