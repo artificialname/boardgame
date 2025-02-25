@@ -12,7 +12,32 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .header {
+            width: 100%;
+            height: 5vh;
+            background: blue;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        .content {
+            width: 100%;
+            height: 95vh;
+            overflow-y: auto;
+            padding-top: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 5vh;
         }
         .card {
             width: 90vw;
@@ -27,9 +52,9 @@
             justify-content: center;
         }
         .card-title {
-            font-size: 1.2em; /* Reduced size */
+            font-size: 1.2em;
             font-weight: bold;
-            text-align: left; /* Left-aligned */
+            text-align: left;
             margin-bottom: 10px;
         }
         .card-labels {
@@ -39,7 +64,7 @@
             text-align: center;
             font-weight: bold;
             color: #555;
-            font-size: 1em; /* Sub-title text */
+            font-size: 1em;
         }
         .card-content {
             display: grid;
@@ -55,20 +80,23 @@
     </style>
 </head>
 <body>
-    {% for card in cards %}
-    <div class="card">
-        <div class="card-title">{{ card.title }}</div>
-        <div class="card-labels">
-            {% for label in labels %}
-            <div>{{ label }}</div>
-            {% endfor %}
+    <div class="header">Playing Cards!</div>
+    <div class="content">
+        {% for card in cards %}
+        <div class="card">
+            <div class="card-title">{{ card.title }}</div>
+            <div class="card-labels">
+                {% for label in labels %}
+                <div>{{ label }}</div>
+                {% endfor %}
+            </div>
+            <div class="card-content">
+                {% for value in card.data %}
+                <div>{{ value }}</div>
+                {% endfor %}
+            </div>
         </div>
-        <div class="card-content">
-            {% for value in card.data %}
-            <div>{{ value }}</div>
-            {% endfor %}
-        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </body>
 </html>
