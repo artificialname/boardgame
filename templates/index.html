@@ -16,22 +16,22 @@
             overflow: hidden;
         }
         .header {
-            width: 90vw;
+            width: 100%;
             height: 5vh;
             background: blue;
-            color: white;
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
+            color: black;  /* Text color set to black */
+            display: flex;
             align-items: center;
-            justify-items: center;
-            font-size: 1em;
+            justify-content: center;
+            font-size: 1em;  /* Slightly smaller text */
             font-weight: bold;
             position: fixed;
             top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            padding: 0 10px;
+            left: 0;
+            padding: 5px;
+            white-space: nowrap; /* Prevent text wrapping */
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .content {
             width: 100%;
@@ -76,7 +76,7 @@
             gap: 10px;
             text-align: center;
         }
-        .card-labels div, .card-content div, .header div {
+        .card-labels div, .card-content div {
             background: #ddd;
             padding: 10px;
             border-radius: 5px;
@@ -84,15 +84,22 @@
     </style>
 </head>
 <body>
+    <!-- Updated Header with Row 1 from Google Sheet -->
     <div class="header">
-        {% for header in column_headers %}
-        <div>{{ header }}</div>
+        {% for label in column_headers %}
+            <span style="margin: 0 10px;">{{ label }}</span>
         {% endfor %}
     </div>
+
     <div class="content">
         {% for card in cards %}
         <div class="card">
             <div class="card-title">{{ card.title }}</div>
+            <div class="card-labels">
+                {% for label in labels %}
+                <div>{{ label }}</div>
+                {% endfor %}
+            </div>
             <div class="card-content">
                 {% for value in card.data %}
                 <div>{{ value }}</div>
