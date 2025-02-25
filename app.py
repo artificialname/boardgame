@@ -9,15 +9,12 @@ GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQbXNvjqouvs
 def fetch_data():
     df = pd.read_csv(GOOGLE_SHEET_URL)
 
-    # Ensure there are enough rows to avoid out-of-bounds errors
+    # Ensure there are enough rows to avoid errors
     if df.shape[0] < 2:
         return [], [], []
 
-    # Extract labels from B1:I1 and replace NaN with empty strings
-    labels = df.iloc[0, 1:9].fillna("").tolist()
-
-    # Extract headers from B2:I2 and replace NaN with empty strings
-    column_headers = df.iloc[1, 1:9].fillna("").tolist()
+    # Extract Row 1 (column headers)
+    column_headers = df.iloc[0, 1:9].fillna("").tolist()
 
     # Extract cards dynamically based on available rows
     cards = []
@@ -28,12 +25,12 @@ def fetch_data():
         }
         cards.append(card)
 
-    return labels, column_headers, cards
+    return column_headers, cards
 
 @app.route("/")
 def home():
-    labels, column_headers, cards = fetch_data()
-    return render_template("index.html", labels=labels, column_headers=column_headers, cards=cards)
+    column_headers, cards = fetch_data()
+    return render_template("index.html", column_headers=column_headers, cards=cards)
 
 if __name__ == "__main__":
     app.run(debug=True)
