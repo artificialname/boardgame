@@ -16,18 +16,22 @@
             overflow: hidden;
         }
         .header {
-            width: 100%;
+            width: 90vw;
             height: 5vh;
             background: blue;
             color: white;
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
             align-items: center;
-            justify-content: center;
-            font-size: 1.2em;
+            justify-items: center;
+            font-size: 1em;
             font-weight: bold;
             position: fixed;
             top: 0;
-            left: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            padding: 0 10px;
         }
         .content {
             width: 100%;
@@ -72,7 +76,7 @@
             gap: 10px;
             text-align: center;
         }
-        .card-labels div, .card-content div {
+        .card-labels div, .card-content div, .header div {
             background: #ddd;
             padding: 10px;
             border-radius: 5px;
@@ -80,16 +84,15 @@
     </style>
 </head>
 <body>
-    <div class="header">Playing Cards!</div>
+    <div class="header">
+        {% for header in column_headers %}
+        <div>{{ header }}</div>
+        {% endfor %}
+    </div>
     <div class="content">
         {% for card in cards %}
         <div class="card">
             <div class="card-title">{{ card.title }}</div>
-            <div class="card-labels">
-                {% for label in labels %}
-                <div>{{ label }}</div>
-                {% endfor %}
-            </div>
             <div class="card-content">
                 {% for value in card.data %}
                 <div>{{ value }}</div>
