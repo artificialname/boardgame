@@ -43,20 +43,22 @@
         .header div:first-child {
             border-left: none;
         }
-        .circle-container {
-            display: flex;
-            justify-content: center;
-            align-items: center; /* Ensures proper alignment */
-            gap: 5px; /* Space between circles */
-            margin-bottom: 5px; /* Space between circles and label */
-        }
-        .circle {
-            width: 12px;  /* Visible size */
-            height: 12px;
-            border-radius: 50%;
-            border: 2px solid;
-            background-color: white;
-            cursor: pointer;
+        
+       .circle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px; /* Space between circles */
+}
+
+.circle {
+    width: 6px;  /* Half the original size */
+    height: 6px;
+    border-radius: 50%;
+    border: 1px solid;
+    background-color: white;
+    cursor: pointer;
+
         }
         .dark-red { border-color: darkred; }
         .light-blue { border-color: lightblue; }
