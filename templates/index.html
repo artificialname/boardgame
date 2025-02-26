@@ -35,15 +35,37 @@
             padding: 10px;
             border-left: 1px solid white;
             background: transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         .header div:first-child {
             border-left: none;
         }
+        .circle-container {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 3px;
+        }
+        .circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid;
+            background-color: white;
+            cursor: pointer;
+        }
+        .dark-red { border-color: darkred; }
+        .light-blue { border-color: lightblue; }
+        .black { border-color: black; }
+        .orange { border-color: orange; }
         .content {
             width: 100%;
             height: calc(100vh - 6vh);
             overflow-y: auto;
-            padding-top: 11vh;  /* Ensures first card is fully visible */
+            padding-top: 11vh;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -59,8 +81,8 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            border-top: 1px solid #ccc; /* Thin grey line at the top */
-            border-bottom: 1px solid #ccc; /* Thin grey line at the bottom */
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
         }
         .card-title {
             font-size: 1.2em;
@@ -88,7 +110,17 @@
     <!-- Header with Google Sheet Row 1 -->
     <div class="header">
         {% for label in column_headers %}
-            <div>{{ label }}</div>
+            <div>
+                <!-- Circle Selection Row -->
+                <div class="circle-container">
+                    <div class="circle dark-red" data-color="darkred"></div>
+                    <div class="circle light-blue" data-color="lightblue"></div>
+                    <div class="circle black" data-color="black"></div>
+                    <div class="circle orange" data-color="orange"></div>
+                </div>
+                <!-- Header Label -->
+                <div>{{ label }}</div>
+            </div>
         {% endfor %}
     </div>
 
@@ -109,5 +141,21 @@
         </div>
         {% endfor %}
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const circles = document.querySelectorAll(".circle");
+
+            circles.forEach(circle => {
+                circle.addEventListener("click", function () {
+                    if (this.style.backgroundColor === "white" || this.style.backgroundColor === "") {
+                        this.style.backgroundColor = this.dataset.color;
+                    } else {
+                        this.style.backgroundColor = "white";
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
