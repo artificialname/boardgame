@@ -44,11 +44,14 @@
             border-left: none;
         }
         
-       .circle-container {
+ 
+.circle-container {
     display: flex;
+    flex-direction: row; /* Ensures horizontal alignment */
     justify-content: center;
     align-items: center;
     gap: 3px; /* Space between circles */
+    flex-wrap: nowrap; /* Prevents wrapping */
 }
 
 .circle {
@@ -58,8 +61,9 @@
     border: 1px solid;
     background-color: white;
     cursor: pointer;
+}
 
-        }
+        
         .dark-red { border-color: darkred; }
         .light-blue { border-color: lightblue; }
         .black { border-color: black; }
