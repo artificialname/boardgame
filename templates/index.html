@@ -46,14 +46,14 @@
         .circle-container {
             display: flex;
             justify-content: center;
-            gap: 3px;
-            margin-bottom: 3px;
+            gap: 5px; /* Space between circles */
+            margin-bottom: 5px; /* Space between circles and label */
         }
         .circle {
-            width: 10px;  /* Smaller size */
-            height: 10px;
+            width: 12px;  /* Small size */
+            height: 12px;
             border-radius: 50%;
-            border: 1.5px solid;
+            border: 2px solid;
             background-color: white;
             cursor: pointer;
         }
@@ -111,7 +111,7 @@
     <div class="header">
         {% for label in column_headers %}
             <div>
-                <!-- Circles are now smaller and in one horizontal row -->
+                <!-- Circles now line up horizontally -->
                 <div class="circle-container">
                     <div class="circle dark-red" data-color="darkred"></div>
                     <div class="circle light-blue" data-color="lightblue"></div>
