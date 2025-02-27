@@ -27,8 +27,18 @@
             padding: 10px 0;
             min-height: 6vh;
         }
-        .header .circle-container, .header .label-container {
-            display: contents;
+        .header .circle-container,
+        .header .label-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .header .circle-container {
+            flex-direction: row;
+            gap: 3px;
+        }
+        .header .label-container {
+            flex-direction: column;
         }
         .header div {
             padding: 10px;
@@ -40,12 +50,6 @@
         }
         .header div:first-child {
             border-left: none;
-        }
-        .circle-container div {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 3px;
         }
         .circle {
             width: 6px;
@@ -65,12 +69,10 @@
     <div class="header">
         {% for label in column_headers %}
             <div class="circle-container">
-                <div>
-                    <div class="circle dark-red" data-color="darkred"></div>
-                    <div class="circle light-blue" data-color="lightblue"></div>
-                    <div class="circle black" data-color="black"></div>
-                    <div class="circle orange" data-color="orange"></div>
-                </div>
+                <div class="circle dark-red" data-color="darkred"></div>
+                <div class="circle light-blue" data-color="lightblue"></div>
+                <div class="circle black" data-color="black"></div>
+                <div class="circle orange" data-color="orange"></div>
             </div>
         {% endfor %}
         {% for label in column_headers %}
