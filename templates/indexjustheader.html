@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playing Cards!</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            overflow: hidden;
+        }
+        .header {
+            width: 100%;
+            background: blue;
+            color: black;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: auto auto;
+            text-align: center;
+            font-size: 0.9em;
+            font-weight: normal;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 10px 0;
+            min-height: 6vh;
+        }
+        .header .circle-container,
+        .header .label-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .header .circle-container {
+            flex-direction: row;
+            gap: 3px;
+        }
+        .header .label-container {
+            flex-direction: column;
+        }
+        .header div {
+            padding: 10px;
+            border-left: 1px solid white;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .header div:first-child {
+            border-left: none;
+        }
+        .circle {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            border: 2px solid;
+            background-color: white;
+            cursor: pointer;
+        }
+        .dark-red { border-color: darkred; }
+        .light-blue { border-color: lightblue; }
+        .black { border-color: black; }
+        .orange { border-color: orange; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        {% for label in column_headers %}
+            <div class="circle-container">
+                <div class="circle dark-red" data-color="darkred"></div>
+                <div class="circle light-blue" data-color="lightblue"></div>
+                <div class="circle black" data-color="black"></div>
+                <div class="circle orange" data-color="orange"></div>
+            </div>
+        {% endfor %}
+        {% for label in column_headers %}
+            <div class="label-container">{{ label }}</div>
+        {% endfor %}
+    </div>
+</body>
+</html>
