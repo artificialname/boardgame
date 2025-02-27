@@ -10,38 +10,54 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            flex-direction: row;
             height: 100vh;
             overflow: hidden;
         }
-
-        /* HEADER STYLES */
-        .header-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: blue;
-            color: white; /* Changed text color to white */
-            padding: 10px 0;
+        .sidebar {
+            width: 5%;
+            background: white;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            z-index: 1000;
+            justify-content: center;
+            padding-top: 10vh;
         }
-
+        .player-box {
+            width: 80%;
+            background: black;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .main-container {
+            width: 95%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
         .header-grid {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
             width: 90%;
             max-width: 1200px;
+            background: blue;
+            color: white;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
             text-align: center;
+            align-items: center;
             font-size: 0.9em;
             font-weight: normal;
+            position: fixed;
+            top: 0;
+            left: 5%;
+            padding: 10px 0;
+            min-height: 6vh;
+            border-bottom: 2px solid white;
         }
-
-        .header-item {
+        .header-grid div {
             padding: 10px;
             border-left: 1px solid white;
             display: flex;
@@ -49,47 +65,41 @@
             align-items: center;
             justify-content: center;
         }
-
-        .header-item:first-child {
+        .header-grid div:first-child {
             border-left: none;
         }
-
         .circle-container {
             display: flex;
+            flex-direction: row;
             justify-content: center;
             align-items: center;
-            gap: 5px;
+            gap: 3px;
+            flex-wrap: nowrap;
         }
-
         .circle {
-            width: 9px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            border: 3px solid;
+            border: 2px solid;
             background-color: white;
             cursor: pointer;
         }
-
         .dark-red { border-color: darkred; }
         .light-blue { border-color: lightblue; }
         .black { border-color: black; }
         .orange { border-color: orange; }
-
-        /* CONTENT AREA */
         .content {
-            width: 100%;
-            height: calc(100vh - 6vh);
-            overflow-y: auto;
-            padding-top: 12vh; /* Increased padding to fix visibility issue */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* CARD STYLES */
-        .card {
             width: 90%;
             max-width: 1200px;
+            height: calc(100vh - 6vh);
+            overflow-y: auto;
+            padding-top: 11vh;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .card {
+            width: 100%;
             background: white;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -97,70 +107,63 @@
             padding: 0;
             display: flex;
             flex-direction: column;
+            justify-content: center;
             border-top: 1px solid #ccc;
             border-bottom: 1px solid #ccc;
         }
-
         .card-title {
             font-size: 1.2em;
             font-weight: bold;
             text-align: left;
+            margin-bottom: 10px;
             padding-left: 10px;
         }
-
         .card-labels, .card-content {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
             text-align: center;
-            width: 100%;
         }
-
         .card-labels div, .card-content div {
             padding: 10px;
             background: #ddd;
             border-left: 1px solid #999;
         }
-
         .card-labels div:first-child, .card-content div:first-child {
             border-left: none;
         }
     </style>
 </head>
 <body>
-    <!-- HEADER -->
-    <div class="header-container">
-        <div class="header-grid">
-            {% for label in column_headers %}
-                <div class="header-item">
-                    <div class="circle-container">
-                        <div class="circle dark-red" data-color="darkred"></div>
-                        <div class="circle light-blue" data-color="lightblue"></div>
-                        <div class="circle black" data-color="black"></div>
-                        <div class="circle orange" data-color="orange"></div>
-                    </div>
-                    <div>{{ label }}</div>
-                </div>
-            {% endfor %}
-        </div>
+    <div class="sidebar">
+        <div class="player-box">Player 1</div>
+        <div class="player-box">Player 2</div>
+        <div class="player-box">Player 3</div>
+        <div class="player-box">Player 4</div>
     </div>
-
-    <!-- CONTENT -->
-    <div class="content">
-        {% for card in cards %}
-        <div class="card">
-            <div class="card-title">{{ card.title }}</div>
-            <div class="card-labels">
-                {% for label in labels %}
-                <div>{{ label }}</div>
-                {% endfor %}
-            </div>
-            <div class="card-content">
-                {% for value in card.data %}
-                <div>{{ value }}</div>
-                {% endfor %}
+    
+    <div class="main-container">
+        <div class="header-grid">
+            <div class="circle-container">
+                <div class="circle dark-red" data-color="darkred"></div>
+                <div class="circle light-blue" data-color="lightblue"></div>
+                <div class="circle black" data-color="black"></div>
+                <div class="circle orange" data-color="orange"></div>
             </div>
         </div>
-        {% endfor %}
+
+        <div class="content">
+            <div class="card">
+                <div class="card-title">Sample Card</div>
+                <div class="card-labels">
+                    <div>Label 1</div>
+                    <div>Label 2</div>
+                </div>
+                <div class="card-content">
+                    <div>Value 1</div>
+                    <div>Value 2</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -168,11 +171,7 @@
             const circles = document.querySelectorAll(".circle");
             circles.forEach(circle => {
                 circle.addEventListener("click", function () {
-                    if (this.style.backgroundColor === "white" || this.style.backgroundColor === "") {
-                        this.style.backgroundColor = this.dataset.color;
-                    } else {
-                        this.style.backgroundColor = "white";
-                    }
+                    this.style.backgroundColor = this.style.backgroundColor === "white" ? this.dataset.color : "white";
                 });
             });
         });
