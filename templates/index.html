@@ -9,10 +9,6 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100vh;
             overflow: hidden;
         }
         .header {
@@ -43,126 +39,41 @@
         .header div:first-child {
             border-left: none;
         }
-        
- 
-.circle-container {
-    display: flex;
-    flex-direction: row; /* Ensures horizontal alignment */
-    justify-content: left;
-    align-items: center;
-    gap: 3px; /* Space between circles */
-    flex-wrap: nowrap; /* Prevents wrapping */
-}
-
-.circle {
-    width: 6px;  /* Half the original size */
-    height: 6px;
-    border-radius: 50%;
-    border: 2px solid;
-    background-color: white;
-    cursor: pointer;
-}
-
-        
+        .circle-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            align-items: center;
+            gap: 3px;
+            flex-wrap: nowrap;
+        }
+        .circle {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            border: 2px solid;
+            background-color: white;
+            cursor: pointer;
+        }
         .dark-red { border-color: darkred; }
         .light-blue { border-color: lightblue; }
         .black { border-color: black; }
         .orange { border-color: orange; }
-        .content {
-            width: 100%;
-            height: calc(100vh - 6vh);
-            overflow-y: auto;
-            padding-top: 11vh;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        .card {
-            width: 100%;
-            max-width: 100%;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin: 20px 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            border-top: 1px solid #ccc;
-            border-bottom: 1px solid #ccc;
-        }
-        .card-title {
-            font-size: 1.2em;
-            font-weight: bold;
-            text-align: left;
-            margin-bottom: 10px;
-            padding-left: 10px;
-        }
-        .card-labels, .card-content {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            text-align: center;
-        }
-        .card-labels div, .card-content div {
-            padding: 10px;
-            background: #ddd;
-            border-left: 1px solid #999;
-        }
-        .card-labels div:first-child, .card-content div:first-child {
-            border-left: none;
-        }
     </style>
 </head>
 <body>
-    <!-- Header with Google Sheet Row 1 -->
     <div class="header">
         {% for label in column_headers %}
             <div>
-                <!-- Circles now line up horizontally -->
                 <div class="circle-container">
                     <div class="circle dark-red" data-color="darkred"></div>
                     <div class="circle light-blue" data-color="lightblue"></div>
                     <div class="circle black" data-color="black"></div>
                     <div class="circle orange" data-color="orange"></div>
                 </div>
-                <!-- Header Label -->
                 <div>{{ label }}</div>
             </div>
         {% endfor %}
     </div>
-
-    <div class="content">
-        {% for card in cards %}
-        <div class="card">
-            <div class="card-title">{{ card.title }}</div>
-            <div class="card-labels">
-                {% for label in labels %}
-                <div>{{ label }}</div>
-                {% endfor %}
-            </div>
-            <div class="card-content">
-                {% for value in card.data %}
-                <div>{{ value }}</div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const circles = document.querySelectorAll(".circle");
-
-            circles.forEach(circle => {
-                circle.addEventListener("click", function () {
-                    if (this.style.backgroundColor === "white" || this.style.backgroundColor === "") {
-                        this.style.backgroundColor = this.dataset.color;
-                    } else {
-                        this.style.backgroundColor = "white";
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>
