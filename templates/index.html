@@ -19,7 +19,6 @@
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: auto auto;
             text-align: center;
-            align-items: center;
             font-size: 0.9em;
             font-weight: normal;
             position: fixed;
@@ -28,25 +27,25 @@
             padding: 10px 0;
             min-height: 6vh;
         }
+        .header .circle-container, .header .label-container {
+            display: contents;
+        }
         .header div {
             padding: 10px;
             border-left: 1px solid white;
             background: transparent;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
         .header div:first-child {
             border-left: none;
         }
-        .circle-container {
+        .circle-container div {
             display: flex;
-            flex-direction: row;
             justify-content: center;
             align-items: center;
             gap: 3px;
-            flex-wrap: nowrap;
         }
         .circle {
             width: 6px;
@@ -65,8 +64,8 @@
 <body>
     <div class="header">
         {% for label in column_headers %}
-            <div>
-                <div class="circle-container">
+            <div class="circle-container">
+                <div>
                     <div class="circle dark-red" data-color="darkred"></div>
                     <div class="circle light-blue" data-color="lightblue"></div>
                     <div class="circle black" data-color="black"></div>
@@ -75,7 +74,7 @@
             </div>
         {% endfor %}
         {% for label in column_headers %}
-            <div>{{ label }}</div>
+            <div class="label-container">{{ label }}</div>
         {% endfor %}
     </div>
 </body>
