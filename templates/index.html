@@ -198,5 +198,20 @@
         </div>
         {% endfor %}
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const rectangles = document.querySelectorAll(".sidebar-item");
+            rectangles.forEach(rect => {
+                rect.addEventListener("click", function () {
+                    if (this.style.backgroundColor === "white" || this.style.backgroundColor === "") {
+                        this.style.backgroundColor = this.dataset.color;
+                    } else {
+                        this.style.backgroundColor = "white";
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
