@@ -30,9 +30,10 @@
             width: 40px;
             height: 40px;
             margin: 10px 0;
-            background: red;
+            background: white;
             border-radius: 4px;
             cursor: pointer;
+            border: 2px solid #999;
         }
 
         /* HEADER STYLES */
@@ -149,10 +150,10 @@
 <body>
     <!-- SIDEBAR -->
     <div class="sidebar">
-        <div class="sidebar-item"></div>
-        <div class="sidebar-item"></div>
-        <div class="sidebar-item"></div>
-        <div class="sidebar-item"></div>
+        <div class="sidebar-item" data-color="red"></div>
+        <div class="sidebar-item" data-color="blue"></div>
+        <div class="sidebar-item" data-color="green"></div>
+        <div class="sidebar-item" data-color="yellow"></div>
     </div>
 
     <!-- HEADER -->
@@ -196,11 +197,14 @@
             const circles = document.querySelectorAll(".circle");
             circles.forEach(circle => {
                 circle.addEventListener("click", function () {
-                    if (this.style.backgroundColor === "white" || this.style.backgroundColor === "") {
-                        this.style.backgroundColor = this.dataset.color;
-                    } else {
-                        this.style.backgroundColor = "white";
-                    }
+                    this.style.backgroundColor = this.style.backgroundColor === "white" ? this.dataset.color : "white";
+                });
+            });
+
+            const sidebarItems = document.querySelectorAll(".sidebar-item");
+            sidebarItems.forEach(item => {
+                item.addEventListener("click", function () {
+                    this.style.backgroundColor = this.style.backgroundColor === "white" ? this.dataset.color : "white";
                 });
             });
         });
