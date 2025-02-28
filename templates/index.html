@@ -33,8 +33,13 @@
             background: white;
             border-radius: 4px;
             cursor: pointer;
-            border: 2px solid #999;
+            border: 2px solid;
         }
+
+        .red { border-color: red; }
+        .blue { border-color: blue; }
+        .green { border-color: green; }
+        .yellow { border-color: yellow; }
 
         /* HEADER STYLES */
         .header-container {
@@ -49,7 +54,7 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            border: 2px solid red;
+            border: 2px dashed red; /* Temporary border for debugging */
         }
 
         .header-grid {
@@ -106,7 +111,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            border: 2px solid blue;
+            border: 2px dashed green; /* Temporary border for debugging */
         }
 
         /* CARD STYLES */
@@ -152,10 +157,10 @@
 <body>
     <!-- SIDEBAR -->
     <div class="sidebar">
-        <div class="sidebar-item" data-color="red"></div>
-        <div class="sidebar-item" data-color="blue"></div>
-        <div class="sidebar-item" data-color="green"></div>
-        <div class="sidebar-item" data-color="yellow"></div>
+        <div class="sidebar-item red" data-color="red"></div>
+        <div class="sidebar-item blue" data-color="blue"></div>
+        <div class="sidebar-item green" data-color="green"></div>
+        <div class="sidebar-item yellow" data-color="yellow"></div>
     </div>
 
     <!-- HEADER -->
@@ -193,23 +198,5 @@
         </div>
         {% endfor %}
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const circles = document.querySelectorAll(".circle");
-            circles.forEach(circle => {
-                circle.addEventListener("click", function () {
-                    this.style.backgroundColor = this.style.backgroundColor === "white" ? this.dataset.color : "white";
-                });
-            });
-
-            const sidebarItems = document.querySelectorAll(".sidebar-item");
-            sidebarItems.forEach(item => {
-                item.addEventListener("click", function () {
-                    this.style.backgroundColor = this.style.backgroundColor === "white" ? this.dataset.color : "white";
-                });
-            });
-        });
-    </script>
 </body>
 </html>
