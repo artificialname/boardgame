@@ -45,7 +45,7 @@
         .header-container {
             position: fixed;
             top: 0;
-            left: 10%;
+            left: 5%;
             width: 95%;
             background: blue;
             color: white;
@@ -57,22 +57,26 @@
             border: none;
         }
 
-        .header-grid, .card-labels, .card-content {
-            width: 100%;
-            max-width: 1200px;
+        .header-grid {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
+            width: 100%;
+            max-width: 1200px;
             text-align: center;
-            box-sizing: border-box; /* Ensures padding doesn't affect width */
+            font-size: 0.9em;
+            font-weight: normal;
         }
 
-        .header-item, .card-labels div, .card-content div {
+        .header-item {
             padding: 10px;
             border-left: 1px solid white;
-            box-sizing: border-box; /* Consistency */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        .card-labels div:first-child, .card-content div:first-child {
+        .header-item:first-child {
             border-left: none;
         }
 
@@ -131,6 +135,23 @@
             text-align: left;
             padding-left: 10px;
         }
+
+        .card-labels, .card-content {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            text-align: center;
+            width: 100%;
+        }
+
+        .card-labels div, .card-content div {
+            padding: 10px;
+            background: #ddd;
+            border-left: 1px solid #999;
+        }
+
+        .card-labels div:first-child, .card-content div:first-child {
+            border-left: none;
+        }
     </style>
 </head>
 <body>
@@ -177,5 +198,27 @@
         </div>
         {% endfor %}
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Toggle sidebar rectangles' colors
+            document.querySelectorAll(".sidebar-item").forEach(rect => {
+                rect.addEventListener("click", function () {
+                    this.style.backgroundColor = this.style.backgroundColor === "white" || this.style.backgroundColor === "" 
+                        ? this.dataset.color 
+                        : "white";
+                });
+            });
+
+            // Toggle header circles' colors
+            document.querySelectorAll(".circle").forEach(circle => {
+                circle.addEventListener("click", function () {
+                    this.style.backgroundColor = this.style.backgroundColor === "white" || this.style.backgroundColor === "" 
+                        ? this.dataset.color 
+                        : "white";
+                });
+            });
+        });
+    </script>
 </body>
 </html>
