@@ -10,10 +10,28 @@
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             height: 100vh;
             overflow: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 5%;
+            background: #333;
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 10px;
+        }
+
+        .sidebar-item {
+            width: 20px;
+            height: 20px;
+            margin: 10px 0;
+            background: red;
+            border-radius: 4px;
         }
 
         /* HEADER STYLES */
@@ -128,6 +146,13 @@
     </style>
 </head>
 <body>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sidebar-item"></div>
+        <div class="sidebar-item"></div>
+        <div class="sidebar-item"></div>
+    </div>
+
     <!-- HEADER -->
     <div class="header-container">
         <div class="header-grid">
