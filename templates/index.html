@@ -16,51 +16,7 @@
             overflow: hidden;
         }
 
-        /* SIDEBAR */
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 5%;
-            height: 100vh;
-            background-color: white;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-            z-index: 1100;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            padding-bottom: 20px;
-        }
-
-        .rectangle-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            position: relative;
-            bottom: 5%;
-        }
-
-        .rectangle {
-            width: 35px;
-            height: 25px;
-            border: 3px solid;
-            background-color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-            color: black;
-        }
-
-        .dark-red { border-color: darkred; }
-        .light-blue { border-color: lightblue; }
-        .black { border-color: black; }
-        .orange { border-color: orange; }
-
-        /* HEADER */
+        /* HEADER STYLES */
         .header-container {
             position: fixed;
             top: 0;
@@ -114,12 +70,12 @@
             cursor: pointer;
         }
 
-        .circle[data-color="darkred"] { border-color: darkred; }
-        .circle[data-color="lightblue"] { border-color: lightblue; }
-        .circle[data-color="black"] { border-color: black; }
-        .circle[data-color="orange"] { border-color: orange; }
+        .dark-red { border-color: darkred; }
+        .light-blue { border-color: lightblue; }
+        .black { border-color: black; }
+        .orange { border-color: orange; }
 
-        /* CONTENT */
+        /* CONTENT AREA */
         .content {
             width: 95%;
             margin-left: 5%;
@@ -172,26 +128,16 @@
     </style>
 </head>
 <body>
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <div class="rectangle-container">
-            <div class="rectangle dark-red" data-color="darkred">1</div>
-            <div class="rectangle light-blue" data-color="lightblue">2</div>
-            <div class="rectangle black" data-color="black">3</div>
-            <div class="rectangle orange" data-color="orange">4</div>
-        </div>
-    </div>
-
     <!-- HEADER -->
     <div class="header-container">
         <div class="header-grid">
             {% for label in column_headers %}
                 <div class="header-item">
                     <div class="circle-container">
-                        <div class="circle" data-color="darkred"></div>
-                        <div class="circle" data-color="lightblue"></div>
-                        <div class="circle" data-color="black"></div>
-                        <div class="circle" data-color="orange"></div>
+                        <div class="circle dark-red" data-color="darkred"></div>
+                        <div class="circle light-blue" data-color="lightblue"></div>
+                        <div class="circle black" data-color="black"></div>
+                        <div class="circle orange" data-color="orange"></div>
                     </div>
                     <div>{{ label }}</div>
                 </div>
@@ -205,7 +151,7 @@
         <div class="card">
             <div class="card-title">{{ card.title }}</div>
             <div class="card-labels">
-                {% for label in column_headers %}
+                {% for label in labels %}
                 <div>{{ label }}</div>
                 {% endfor %}
             </div>
@@ -217,5 +163,25 @@
         </div>
         {% endfor %}
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const circles = document.querySelectorAll(".circle");
+            
+            function toggleColor(element) {
+                if (element.style.backgroundColor === "white" || element.style.backgroundColor === "") {
+                    element.style.backgroundColor = element.dataset.color;
+                } else {
+                    element.style.backgroundColor = "white";
+                }
+            }
+
+            circles.forEach(circle => {
+                circle.addEventListener("click", function () {
+                    toggleColor(this);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
