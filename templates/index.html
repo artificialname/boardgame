@@ -27,11 +27,12 @@
         }
 
         .sidebar-item {
-            width: 20px;
-            height: 20px;
+            width: 40px;
+            height: 40px;
             margin: 10px 0;
             background: red;
             border-radius: 4px;
+            cursor: pointer;
         }
 
         /* HEADER STYLES */
@@ -52,7 +53,7 @@
         .header-grid {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
-            width: 90%;
+            width: 100%;
             max-width: 1200px;
             text-align: center;
             font-size: 0.9em;
@@ -80,8 +81,8 @@
         }
 
         .circle {
-            width: 9px;
-            height: 8px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             border: 3px solid;
             background-color: white;
@@ -107,7 +108,7 @@
 
         /* CARD STYLES */
         .card {
-            width: 90%;
+            width: 100%;
             max-width: 1200px;
             background: white;
             border-radius: 15px;
@@ -148,6 +149,7 @@
 <body>
     <!-- SIDEBAR -->
     <div class="sidebar">
+        <div class="sidebar-item"></div>
         <div class="sidebar-item"></div>
         <div class="sidebar-item"></div>
         <div class="sidebar-item"></div>
@@ -192,18 +194,13 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const circles = document.querySelectorAll(".circle");
-            
-            function toggleColor(element) {
-                if (element.style.backgroundColor === "white" || element.style.backgroundColor === "") {
-                    element.style.backgroundColor = element.dataset.color;
-                } else {
-                    element.style.backgroundColor = "white";
-                }
-            }
-
             circles.forEach(circle => {
                 circle.addEventListener("click", function () {
-                    toggleColor(this);
+                    if (this.style.backgroundColor === "white" || this.style.backgroundColor === "") {
+                        this.style.backgroundColor = this.dataset.color;
+                    } else {
+                        this.style.backgroundColor = "white";
+                    }
                 });
             });
         });
