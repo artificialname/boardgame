@@ -177,6 +177,25 @@
         </div>
     </div>
 
+    <!-- CONTENT -->
+    <div class="content">
+        {% for card in cards %}
+        <div class="card">
+            <div class="card-title">{{ card.title }}</div>
+            <div class="card-labels">
+                {% for label in labels %}
+                <div>{{ label }}</div>
+                {% endfor %}
+            </div>
+            <div class="card-content">
+                {% for value in card.data %}
+                <div>{{ value }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const circles = document.querySelectorAll(".circle");
