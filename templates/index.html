@@ -12,10 +12,15 @@
             display: flex;
             height: 100vh;
             overflow: hidden;
+            flex-direction: column;
+            align-items: center;
         }
 
         /* SIDEBAR */
         .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
             width: 5%;
             background: #333;
             color: white;
@@ -41,19 +46,25 @@
         .green { border-color: green; }
         .yellow { border-color: yellow; }
 
-        /* HEADER STYLES */
-        .header-container {
-            position: fixed;
-            top: 0;
-            left: 5%;
+        /* MAIN CONTAINER */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             width: 95%;
+            margin-left: 5%;
+            max-width: 1200px;
+        }
+
+        /* HEADER */
+        .header-container {
             background: blue;
             color: white;
             padding: 10px 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            width: 100%;
             border: none;
         }
 
@@ -61,7 +72,6 @@
             display: grid;
             grid-template-columns: repeat(8, 1fr);
             width: 100%;
-            max-width: 1200px;
             text-align: center;
             font-size: 0.9em;
             font-weight: normal;
@@ -101,10 +111,9 @@
         .black { border-color: black; }
         .orange { border-color: orange; }
 
-        /* CONTENT AREA */
+        /* CONTENT */
         .content {
-            width: 95%;
-            margin-left: 5%;
+            width: 100%;
             height: calc(100vh - 6vh);
             overflow-y: auto;
             padding-top: 12vh;
@@ -117,7 +126,6 @@
         /* CARD STYLES */
         .card {
             width: 100%;
-            max-width: 1200px;
             background: white;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -136,20 +144,20 @@
             padding-left: 10px;
         }
 
-        .card-labels, .card-content {
+        .card-content {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
             text-align: center;
             width: 100%;
         }
 
-        .card-labels div, .card-content div {
+        .card-content div {
             padding: 10px;
             background: #ddd;
             border-left: 1px solid #999;
         }
 
-        .card-labels div:first-child, .card-content div:first-child {
+        .card-content div:first-child {
             border-left: none;
         }
     </style>
@@ -163,60 +171,47 @@
         <div class="sidebar-item yellow" data-color="yellow"></div>
     </div>
 
-    <!-- HEADER -->
-    <div class="header-container">
-        <div class="header-grid">
-            {% for label in column_headers %}
-                <div class="header-item">
-                    <div class="circle-container">
-                        <div class="circle dark-red" data-color="darkred"></div>
-                        <div class="circle light-blue" data-color="lightblue"></div>
-                        <div class="circle black" data-color="black"></div>
-                        <div class="circle orange" data-color="orange"></div>
+    <!-- MAIN CONTAINER (Ensures Header & Cards Are Centered) -->
+    <div class="main-container">
+        <!-- HEADER -->
+        <div class="header-container">
+            <div class="header-grid">
+                {% for label in column_headers %}
+                    <div class="header-item">
+                        <div class="circle-container">
+                            <div class="circle dark-red" data-color="darkred"></div>
+                            <div class="circle light-blue" data-color="lightblue"></div>
+                            <div class="circle black" data-color="black"></div>
+                            <div class="circle orange" data-color="orange"></div>
+                        </div>
+                        <div>{{ label }}</div>
                     </div>
-                    <div>{{ label }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content">
+            {% for card in cards %}
+            <div class="card">
+                <div class="card-title">{{ card.title }}</div>
+                <div class="card-content">
+                    {% for value in card.data %}
+                    <div>{{ value }}</div>
+                    {% endfor %}
                 </div>
+            </div>
             {% endfor %}
         </div>
     </div>
 
-    <!-- CONTENT -->
-    <div class="content">
-        {% for card in cards %}
-        <div class="card">
-            <div class="card-title">{{ card.title }}</div>
-            <div class="card-labels">
-                {% for label in column_headers %}
-                <div>{{ label }}</div>
-                {% endfor %}
-            </div>
-            <div class="card-content">
-                {% for value in card.data %}
-                <div>{{ value }}</div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Toggle sidebar rectangles' colors
-            document.querySelectorAll(".sidebar-item").forEach(rect => {
-                rect.addEventListener("click", function () {
-                    this.style.backgroundColor = this.style.backgroundColor === "white" || this.style.backgroundColor === "" 
-                        ? this.dataset.color 
-                        : "white";
-                });
-            });
+        document.querySelectorAll(".circle, .sidebar-item").forEach(el => {
+            el.addEventListener("click", function () {
+                let currentColor = window.getComputedStyle(this).backgroundColor;
+                let whiteRGB = "rgb(255, 255, 255)"; // Ensuring correct white comparison
 
-            // Toggle header circles' colors
-            document.querySelectorAll(".circle").forEach(circle => {
-                circle.addEventListener("click", function () {
-                    this.style.backgroundColor = this.style.backgroundColor === "white" || this.style.backgroundColor === "" 
-                        ? this.dataset.color 
-                        : "white";
-                });
+                this.style.backgroundColor = (currentColor === whiteRGB) ? this.dataset.color : "white";
             });
         });
     </script>
