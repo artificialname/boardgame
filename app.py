@@ -11,10 +11,10 @@ def fetch_data():
 
     # Ensure there are enough rows to avoid errors
     if df.shape[0] < 2:
-        return [], [], []
+        return [], []
 
-    # Extract Row 1 (column headers)
-    column_headers = df.iloc[0, 1:9].fillna("").tolist()
+    # Extract column headers from the actual column names (ignoring the first row)
+    column_headers = df.columns[1:9].tolist()
 
     # Extract cards dynamically based on available rows
     cards = []
