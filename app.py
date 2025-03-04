@@ -1,36 +1,40 @@
-from flask import Flask, render_template
-import pandas as pd
-import numpy as np  # Needed for handling NaN values
+from flask import Flask, jsonify, send_from_directory
+import requests
+import csv
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 
 GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQbXNvjqouvsgiidt7Ra2CvWotrQA_0iDoSiWfhNDews05Afp3bjNlOcfvh-9Hv9dPFp0L4f7QZR-Ah/pub?output=csv"
 
-def fetch_data():
-    df = pd.read_csv(GOOGLE_SHEET_URL)
-
-    # Ensure there are enough rows to avoid errors
-    if df.shape[0] < 2:
-        return [], []
-
-    # Extract column headers from the actual column names (ignoring the first row)
-    column_headers = df.columns[1:9].tolist()
-
-    # Extract cards dynamically based on available rows
-    cards = []
-    for i in range(1, min(14, len(df))):  # Start at row 2 (index 1)
-        card = {
-            "title": df.iloc[i, 0] if pd.notna(df.iloc[i, 0]) else "",  # Handle NaN in title
-            "data": df.iloc[i, 1:9].replace(np.nan, "").tolist()  # Replace NaN with empty strings in data
-        }
-        cards.append(card)
-
-    return column_headers, cards
+def fetch_google_sheet():
+    try:
+        response = requests.get(GOOGLE_SHEET_URL)
+        response.raise_for_status()
+        lines = response.text.splitlines()
+        reader = csv.reader(lines)
+        return list(reader)
+    except Exception as e:
+        print("Error fetching sheet:", str(e))
+        return []
 
 @app.route("/")
-def home():
-    column_headers, cards = fetch_data()
-    return render_template("index.html", column_headers=column_headers, cards=cards)
+def serve_index():
+    return send_from_directory(os.path.join(app.root_path, "static"), "index.html")
+
+@app.route("/get_grid_data")
+def get_grid_data():
+    sheet_data = fetch_google_sheet()
+
+    if not sheet_data or len(sheet_data) < 2:
+        return jsonify({"headers": [], "titles": [], "rows": []})
+    
+    headers = sheet_data[0][1:9]  # Extract B to I from row 1
+    titles = [row[0] for row in sheet_data[1:101] if len(row) >= 9]  # Extract A for row titles
+    rows = [row[1:9] for row in sheet_data[1:101] if len(row) >= 9]  # Extract B to I for rows 2-101
+    
+    return jsonify({"headers": headers, "titles": titles, "rows": rows})
+
 
 if __name__ == "__main__":
     app.run(debug=True)
