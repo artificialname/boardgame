@@ -12,11 +12,8 @@
             display: flex;
             height: 100vh;
             overflow: hidden;
-            flex-direction: column;
-            align-items: center;
         }
 
-        /* SIDEBAR */
         .sidebar {
             position: fixed;
             left: 0;
@@ -37,8 +34,13 @@
             margin: 10px 0;
             background: white;
             border-radius: 4px;
-            cursor: pointer;
             border: 2px solid;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
         .red { border-color: red; }
@@ -46,124 +48,79 @@
         .green { border-color: green; }
         .yellow { border-color: yellow; }
 
-        /* MAIN CONTAINER */
-        .main-container {
+        .grid-container {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            width: 95%;
+            width: calc(100% - 5%);
             margin-left: 5%;
-            max-width: 1200px;
+            height: 100vh;
+            overflow-y: auto;
         }
 
-        /* HEADER */
-        .header-container {
-            background: blue;
-            color: white;
-            padding: 10px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            border: none;
-        }
-
-        .header-grid {
+        .grid-header {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
-            width: 100%;
+            background: #cce5ff;
             text-align: center;
-            font-size: 0.9em;
-            font-weight: normal;
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 10px 0;
+            border-bottom: 2px solid #99c2ff;
+            position: sticky;
+            top: 40px;
+            z-index: 100;
         }
 
-        .header-item {
+        .grid-top {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
             padding: 10px;
-            border-left: 1px solid white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 101;
         }
 
-        .header-item:first-child {
-            border-left: none;
-        }
-
-        .circle-container {
+        .grid-top .column {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 5px;
+            gap: 10px;
         }
 
         .circle {
-            width: 12px;
-            height: 12px;
+            width: 15px;
+            height: 15px;
             border-radius: 50%;
-            border: 3px solid;
-            background-color: white;
+            border: 2px solid;
             cursor: pointer;
         }
 
-        .dark-red { border-color: darkred; }
-        .light-blue { border-color: lightblue; }
-        .black { border-color: black; }
-        .orange { border-color: orange; }
+        .red-circle { border-color: red; }
+        .blue-circle { border-color: blue; }
+        .green-circle { border-color: green; }
+        .yellow-circle { border-color: yellow; }
 
-        /* CONTENT */
-        .content {
-            width: 100%;
-            height: calc(100vh - 6vh);
-            overflow-y: auto;
-            padding-top: 12vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border: none;
-        }
-
-        /* CARD STYLES */
-        .card {
-            width: 100%;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin: 20px 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            border-top: 1px solid #ccc;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .card-title {
-            font-size: 1.2em;
-            font-weight: bold;
-            text-align: left;
-            padding-left: 10px;
-        }
-
-        .card-content {
+        .grid-content {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
-            text-align: center;
-            width: 100%;
+            grid-auto-rows: minmax(auto, max-content);
         }
 
-        .card-content div {
+        .grid-cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid lightgray;
             padding: 10px;
-            background: #ddd;
-            border-left: 1px solid #999;
-        }
-
-        .card-content div:first-child {
-            border-left: none;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            text-align: center;
+            min-height: 40px;
         }
     </style>
 </head>
 <body>
-    <!-- SIDEBAR -->
     <div class="sidebar">
         <div class="sidebar-item red" data-color="red"></div>
         <div class="sidebar-item blue" data-color="blue"></div>
@@ -171,48 +128,76 @@
         <div class="sidebar-item yellow" data-color="yellow"></div>
     </div>
 
-    <!-- MAIN CONTAINER (Ensures Header & Cards Are Centered) -->
-    <div class="main-container">
-        <!-- HEADER -->
-        <div class="header-container">
-            <div class="header-grid">
-                {% for label in column_headers %}
-                    <div class="header-item">
-                        <div class="circle-container">
-                            <div class="circle dark-red" data-color="darkred"></div>
-                            <div class="circle light-blue" data-color="lightblue"></div>
-                            <div class="circle black" data-color="black"></div>
-                            <div class="circle orange" data-color="orange"></div>
-                        </div>
-                        <div>{{ label }}</div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <!-- CONTENT -->
-        <div class="content">
-            {% for card in cards %}
-            <div class="card">
-                <div class="card-title">{{ card.title }}</div>
-                <div class="card-content">
-                    {% for value in card.data %}
-                    <div>{{ value }}</div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endfor %}
-        </div>
+    <div class="grid-container">
+        <div class="grid-top" id="grid-top"></div>
+        <div class="grid-header" id="grid-header"></div>
+        <div class="grid-content" id="grid-content"></div>
     </div>
 
     <script>
-        document.querySelectorAll(".circle, .sidebar-item").forEach(el => {
-            el.addEventListener("click", function () {
-                let currentColor = window.getComputedStyle(this).backgroundColor;
-                let whiteRGB = "rgb(255, 255, 255)"; // Ensuring correct white comparison
+        document.addEventListener("DOMContentLoaded", function () {
+            const topRow = document.getElementById("grid-top");
+            const header = document.getElementById("grid-header");
+            const content = document.getElementById("grid-content");
+            const sidebarItems = document.querySelectorAll(".sidebar-item");
 
-                this.style.backgroundColor = (currentColor === whiteRGB) ? this.dataset.color : "white";
+            function loadHeader() {
+                fetch("/get_grid_data")
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.headers) {
+                            // Fix the layout by ensuring the circles are in a flex container
+                            topRow.innerHTML = data.headers.map(() => `
+                                <div class="column">
+                                    <div class='circle red-circle'></div>
+                                    <div class='circle blue-circle'></div>
+                                    <div class='circle green-circle'></div>
+                                    <div class='circle yellow-circle'></div>
+                                </div>
+                            `).join('');
+
+                            header.innerHTML = data.headers.map(value => `<div class='grid-cell'>${value}</div>`).join('');
+                        }
+                    })
+                    .then(() => {
+                        document.querySelectorAll('.circle').forEach(circle => {
+                            circle.addEventListener('click', function() {
+                                const currentColor = getComputedStyle(this).backgroundColor;
+                                const borderColor = getComputedStyle(this).borderColor;
+                                if (currentColor === 'rgba(0, 0, 0, 0)' || currentColor === 'rgb(255, 255, 255)') {
+                                    this.style.backgroundColor = borderColor;
+                                } else {
+                                    this.style.backgroundColor = 'white';
+                                }
+                            });
+                        });
+                    })
+                    .catch(error => console.error("Error fetching grid data:", error));
+            }
+
+            function addRandomRow() {
+                fetch("/get_grid_data")
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.rows.length > 0) {
+                            const randomIndex = Math.floor(Math.random() * data.rows.length);
+                            const title = data.titles[randomIndex];
+                            const randomRow = data.rows[randomIndex];
+
+                            const titleRow = `<div class='grid-cell' style='grid-column: span 8; font-weight: bold; background: #ddd;'>${title}</div>`;
+                            const dataRow = randomRow.map(value => `<div class='grid-cell'>${value}</div>`).join('');
+
+                            content.innerHTML += titleRow + dataRow;
+                        }
+                    })
+                    .catch(error => console.error("Error fetching grid data:", error));
+            }
+
+            sidebarItems.forEach(item => {
+                item.addEventListener("click", addRandomRow);
             });
+
+            loadHeader();
         });
     </script>
 </body>
